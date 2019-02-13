@@ -15,6 +15,13 @@ struct Employee {
 	char name[MAX_NAME + 1];
 };
 
+//All the letters
+static const char* letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 // Function prototype(s):
 struct Employee *makeEmployee(int birth, int start, const char* name);
 void printEmployee(struct Employee *e);
+int randomNumber();
+char randomCharacter();
+char* randomString(int stringLen);
+struct Employee* randomStruct(int stringLen);

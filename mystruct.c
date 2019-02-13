@@ -52,3 +52,57 @@ void printEmployee(struct Employee *e) {
 
 
 }
+
+/**
+ * Generates a random number
+ * @return a number between 1000 and 3000 inclusive
+ * 			This program assumes that the person will
+ * 			Be born and start working sometime between that time frame
+ */
+int randomNumber(){
+	int number = rand() % 2001;
+	int usefulNumber = number + 1000;
+	return usefulNumber;
+}
+
+/**
+ * Generates a random character
+ * @return a capital letter, A-Z
+ */
+char randomCharacter(){
+	int number = rand() % 26;
+	char letter = *(letters+number);
+	return letter;
+}
+
+/**
+ * Generates a random string
+ * @param stringLen : length of string to be generated
+ * @return pointer to string generated
+ * 		String could contain letters A-Z
+ */
+char* randomString(int stringLen){
+	int charSize = sizeof(char);
+	char* randString = malloc((charSize*stringLen) + 1);
+	for (int i = 0; i < stringLen; i++){
+		randString[i] = randomCharacter();
+	}
+	randString[stringLen] = '\0';
+
+	return randString;
+
+}
+
+/**
+ * Generates an employee struct with random data
+ * @param stringLen: length of string to be generated for name field
+ * @return pointer to created employee struct
+ */
+struct Employee* randomStruct(int stringLen){
+	int birth = randomNumber();
+	int start = randomNumber();
+	char* name = randomString(stringLen);
+
+	struct Employee* emp = makeEmployee(birth, start, name);
+	return emp;
+}

@@ -15,5 +15,9 @@
 bool tests(void);
 bool testPrintEmployee(void);
 bool testMakeEmployee();
+bool testRandomInteger();
+bool testRandomChar();
+bool testRandomString();
+bool testRandomEmployee();
 
 #endif /* TESTS_H_ */
