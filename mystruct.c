@@ -183,8 +183,51 @@ struct Employee* duplicateArray(struct Employee* e, int count){
 	free(emp2);
 }
 
+/**
+ * Frees all employee structs in an array
+ * @param e : array of employee structs to free
+ * @param count : number of employees in array
+ * @return void
+ */
 void freeStructs(struct Employee* e, int count){
 
+	for (int i = 0; i < count; i++){
+		free(e);
+	}
+
+	free(e);
+
+}
+
+/**
+ * Duplicates the content in an array into another array
+ * @param e : array of Employee pointers to be duplicated
+ * @param count : size of array to be duplicated
+ * @return pointer to duplicated array
+ */
+struct Employee* duplicateDeepArray(struct Employee* e, int count){
+	int i = 0;
+
+	struct Employee emp;
+	int empLength = sizeof(emp);
+	struct Employee* emp2 = malloc(empLength * count);
+	int nameLength = strlen(e->name);
+
+	struct Employee empT[count];
+	struct Employee* empPtr = empT;
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+	while (empPtr < endEmpPtr){
+		emp2[i].birth_year = e[i].birth_year;
+		emp2[i].start_year = e[i].start_year;
+		for (int j = 0; j < nameLength; j++){
+			emp2[i].name[j] = e[i].name[j];
+		}
+		i++;
+		empPtr++;
+	}
+
+	return emp2;
+	free(emp2);
 }
 
 

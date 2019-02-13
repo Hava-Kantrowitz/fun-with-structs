@@ -62,7 +62,17 @@ bool tests(void)
 		puts("duplicateEmployees() passed.");
 	}
 
-	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 && ok8; // Did all tests pass?
+	bool ok9 = testFreeArray();
+	if(ok9){
+		puts("freeStructs() passed.");
+	}
+
+	bool ok10 = testDuplicateDeep();
+	if(ok10){
+		puts("duplicateDeep() passed.");
+	}
+
+	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 && ok8 && ok9 && ok10; // Did all tests pass?
 	return ok;
 }
 
@@ -186,6 +196,46 @@ bool testDuplicateEmployees(){
 	struct Employee* emp = arrayEmployees(4);
 	printArray(emp, 4);
 	struct Employee* emp2 = duplicateArray(emp, 4);
+	printArray(emp2, 4);
+
+	if(emp[1].birth_year == emp2[1].birth_year){
+		ok1 = true;
+	}
+
+	if(emp[2].start_year == emp2[2].start_year){
+		ok2 = true;
+	}
+
+	if(strcmp(emp[3].name, emp2[3].name) == 0){
+		ok3 = true;
+	}
+
+	ok = ok1 && ok2 && ok3;
+	return ok;
+}
+
+bool testFreeArray(){
+	bool ok = true;
+	struct Employee* emp = arrayEmployees(4);
+	freeStructs(emp, 4);
+
+
+	return ok;
+}
+
+/**
+ * Tests whether duplication of employee content works
+ * @true if duplicated array is same as original array, false otherwise
+ */
+bool testDuplicateDeep(){
+	bool ok = false;
+	bool ok1 = false;
+	bool ok2 = false;
+	bool ok3 = false;
+
+	struct Employee* emp = arrayEmployees(4);
+	printArray(emp, 4);
+	struct Employee* emp2 = duplicateDeepArray(emp, 4);
 	printArray(emp2, 4);
 
 	if(emp[1].birth_year == emp2[1].birth_year){

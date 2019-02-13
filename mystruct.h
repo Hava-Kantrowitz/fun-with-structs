@@ -29,3 +29,4 @@ struct Employee* arrayEmployees(int count);
 void printArray(struct Employee* e, int count);
 struct Employee* duplicateArray(struct Employee* e, int count);
 void freeStructs(struct Employee* e, int count);
+struct Employee* duplicateDeepArray(struct Employee* e, int count);

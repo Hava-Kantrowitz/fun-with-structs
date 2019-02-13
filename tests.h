@@ -21,5 +21,7 @@ bool testRandomString();
 bool testRandomEmployee();
 bool testArrayEmployees();
 bool testDuplicateEmployees();
+bool testFreeArray();
+bool testDuplicateDeep();
 
 #endif /* TESTS_H_ */

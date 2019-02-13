@@ -4,6 +4,13 @@
 #include "production.h"
 #include "mystruct.h"
 
+/**
+ * Main function to start program and ensure production and tests
+ * go smoothly
+ * @param argc Number of words on the command line
+ * @param argv Array of pointers to character strings representing the words on the command line.
+ * @return exit_success if all code in main ran successfully
+ */
 int main(int argc, char *argv[]) {
 	puts("!!!Hello class, we are working HW3B!!!"); /* prints !!!Hello World!!! */
 	if(tests())
