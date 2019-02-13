@@ -24,7 +24,7 @@ bool tests(void)
 
 	bool ok2 = testMakeEmployee();
 	if (ok2) {
-		puts("printEmployee() passed.");
+		puts("makeEmployee() passed.");
 	}
 
 	ok = ok1 && ok2; // Did all tests pass?
