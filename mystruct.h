@@ -25,3 +25,5 @@ int randomNumber();
 char randomCharacter();
 char* randomString(int stringLen);
 struct Employee* randomStruct(int stringLen);
+struct Employee* arrayEmployees(int count);
+void printArray(struct Employee* e, int count);

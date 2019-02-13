@@ -48,7 +48,12 @@ bool tests(void)
 		puts("randomEmployee() passed.");
 	}
 
-	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6; // Did all tests pass?
+	bool ok7 = testArrayEmployees();
+	if(ok7){
+		puts("arrayEmployee() passed.");
+	}
+
+	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7; // Did all tests pass?
 	return ok;
 }
 
@@ -125,4 +130,10 @@ bool testRandomEmployee(){
 	printEmployee(e);
 
 	return true;
+}
+
+bool testArrayEmployees(){
+	bool ok = true;
+	arrayEmployees(4);
+	return ok;
 }

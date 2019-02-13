@@ -106,3 +106,37 @@ struct Employee* randomStruct(int stringLen){
 	struct Employee* emp = makeEmployee(birth, start, name);
 	return emp;
 }
+
+/**
+ * Allocates an array with a specified number of employees
+ * 	filled with random data
+ * @param count : number of employee structs to have in array
+ * @return pointer to first employee in array
+ */
+struct Employee* arrayEmployees(int count){
+	struct Employee emp;
+	int empLength = sizeof(emp);
+	int randLen = rand() % 11;
+	int i = 0;
+
+	struct Employee* emp2 = malloc(empLength * count);
+	int emp2len = sizeof(emp2);
+	struct Employee* empPtr = malloc(empLength);
+	for (empPtr = 0; empPtr < emp2len; empPtr++){
+		struct Employee* emp3 = randomStruct(randLen);
+		*(emp2+i) = *emp3;
+		i++;
+	}
+
+	return emp2;
+}
+
+/**
+ * Prints out an array of employee structs
+ * @param e : array of employee structs to print out
+ * @param count : number of employee structs in given array
+ * @return void, prints all arrays
+ */
+void printArray(struct Employee* e, int count){
+
+}

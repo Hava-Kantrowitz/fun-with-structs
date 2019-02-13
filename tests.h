@@ -19,5 +19,6 @@ bool testRandomInteger();
 bool testRandomChar();
 bool testRandomString();
 bool testRandomEmployee();
+bool testArrayEmployees();
 
 #endif /* TESTS_H_ */
