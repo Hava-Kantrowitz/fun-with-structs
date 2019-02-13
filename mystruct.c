@@ -114,18 +114,21 @@ struct Employee* randomStruct(int stringLen){
  * @return pointer to first employee in array
  */
 struct Employee* arrayEmployees(int count){
+
+	int i = 0;
 	struct Employee emp;
 	int empLength = sizeof(emp);
-	int randLen = rand() % 11;
-	int i = 0;
-
 	struct Employee* emp2 = malloc(empLength * count);
-	int emp2len = sizeof(emp2);
-	struct Employee* empPtr = malloc(empLength);
-	for (empPtr = 0; empPtr < emp2len; empPtr++){
+
+	struct Employee empT[count];
+	struct Employee* empPtr = empT;
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+	while (empPtr < endEmpPtr){
+		int randLen = (rand() % 10) + 1;
 		struct Employee* emp3 = randomStruct(randLen);
 		*(emp2+i) = *emp3;
 		i++;
+		empPtr++;
 	}
 
 	return emp2;
@@ -138,5 +141,18 @@ struct Employee* arrayEmployees(int count){
  * @return void, prints all arrays
  */
 void printArray(struct Employee* e, int count){
+	int i = 0;
+
+	struct Employee empT[count];
+	struct Employee* empPtr = empT;
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+	while (empPtr < endEmpPtr){
+		struct Employee* emp2 = (e+i);
+		printf("Employee %d:\n", i+1);
+		printEmployee(emp2);
+		i++;
+		empPtr++;
+	}
+
 
 }

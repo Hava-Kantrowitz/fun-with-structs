@@ -134,6 +134,7 @@ bool testRandomEmployee(){
 
 bool testArrayEmployees(){
 	bool ok = true;
-	arrayEmployees(4);
+	struct Employee* emp = arrayEmployees(4);
+	printArray(emp, 4);
 	return ok;
 }
