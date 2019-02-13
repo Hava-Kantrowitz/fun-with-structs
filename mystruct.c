@@ -32,6 +32,7 @@ struct Employee* makeEmployee(int birth, int start, const char *name) {
 	emp2->name[i+1] = '\0';
 
 	return emp2; // Replace this with a pointer to the allocated struct
+	free(emp2);
 }
 
 /**
@@ -132,6 +133,7 @@ struct Employee* arrayEmployees(int count){
 	}
 
 	return emp2;
+	free(emp2);
 }
 
 /**
@@ -153,6 +155,37 @@ void printArray(struct Employee* e, int count){
 		i++;
 		empPtr++;
 	}
+}
 
+/**
+ * Duplicates the pointers in an array into another array
+ * @param e : array of Employee pointers to be duplicated
+ * @param count : size of array to be duplicated
+ * @return pointer to duplicated array
+ */
+struct Employee* duplicateArray(struct Employee* e, int count){
+	int i = 0;
+
+	struct Employee emp;
+	int empLength = sizeof(emp);
+	struct Employee* emp2 = malloc(empLength * count);
+
+	struct Employee empT[count];
+	struct Employee* empPtr = empT;
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+	while (empPtr < endEmpPtr){
+		*(emp2+i) = *(e+i);
+		i++;
+		empPtr++;
+	}
+
+	return emp2;
+	free(emp2);
+}
+
+void freeStructs(struct Employee* e, int count){
 
 }
+
+
+

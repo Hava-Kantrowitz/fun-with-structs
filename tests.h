@@ -20,5 +20,6 @@ bool testRandomChar();
 bool testRandomString();
 bool testRandomEmployee();
 bool testArrayEmployees();
+bool testDuplicateEmployees();
 
 #endif /* TESTS_H_ */
