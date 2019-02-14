@@ -25,7 +25,7 @@ struct Employee* makeEmployee(int birth, int start, const char *name) {
 	emp2->start_year = start;//set start year
 	int i = 0;
 	//set name field
-	while (*name != '\0'){
+	while (*name != '\0' && i < MAX_NAME){
 		emp2->name[i] = *name;
 		name++;
 		i++;
@@ -72,9 +72,8 @@ int randomNumber(){
  * @return a capital letter, A-Z
  */
 char randomCharacter(){
-	int number = rand() % 26;//generates random number 0-25
-	//goes through letters constant (see .h) and finds the one at the location pointed to by number
-	char letter = *(letters+number);
+	int number = rand()%26;
+	char letter = 'A' + number;
 	return letter;//returns the character
 }
 
@@ -159,7 +158,9 @@ struct Employee** duplicateArray(struct Employee** e, int count){
 
 	//loop through array
 	for(int i = 0; i < count; i++){
-		emp2[i] = e[i];//set pointers to each other
+		*emp2 = *e;//set pointers to each other
+		emp2++;
+		e++;
 	}
 
 	return emp2begin;//return pointer to array
@@ -174,11 +175,13 @@ struct Employee** duplicateArray(struct Employee** e, int count){
 void freeStructs(struct Employee** e, int count){
 
 	//frees all individual employee structs in array
+	struct Employee** beginPtr = e;
 	for (int i = 0; i < 4; i++){
-		free(e[i]);
+		free(*e);
+		e++;
 	}
 
-	free(e);//frees entire array
+	free(beginPtr);//frees entire array
 
 }
 
@@ -195,7 +198,13 @@ struct Employee** duplicateDeepArray(struct Employee** e, int count){
 
 	//loop through array
 	for(int i = 0; i < count; i++){
-		emp2[i] = makeEmployee(e[i]->birth_year, e[i]->start_year, e[i]->name);//Create a new employee at each location with old fields
+		struct Employee* emp3 = makeEmployee((*e)->birth_year,
+				(*e)->start_year,
+				(*e)->name);//Create a new employee at each location with old fields
+
+		*emp2 = emp3;
+		emp2++;
+		e++;
 	}
 
 	return emp2begin;//return pointer to array of employee
