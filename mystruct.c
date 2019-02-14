@@ -195,13 +195,7 @@ struct Employee** duplicateDeepArray(struct Employee** e, int count){
 
 	//loop through array
 	for(int i = 0; i < count; i++){
-		emp2[i][i].birth_year = e[i][i].birth_year;//copy over content of birth year
-		emp2[i][i].start_year = e[i][i].start_year;//copy over content of start year
-		int nameLength = strlen(e[i][i].name);//find size of name field
-		//copy over content of name
-		for (int j = 0; j < nameLength; j++){
-			emp2[i][i].name[j] = e[i][i].name[j];
-			}
+		emp2[i] = makeEmployee(e[i]->birth_year, e[i]->start_year, e[i]->name);//Create a new employee at each location with old fields
 	}
 
 	return emp2begin;//return pointer to array of employee
