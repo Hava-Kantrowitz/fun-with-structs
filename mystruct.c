@@ -33,7 +33,6 @@ struct Employee* makeEmployee(int birth, int start, const char *name) {
 	emp2->name[i+1] = '\0';//Make sure name ends with null pointer
 
 	return emp2; // Return pointer to allocated struct
-	free(emp2);//free after use
 }
 
 /**
@@ -118,27 +117,18 @@ struct Employee* randomStruct(int stringLen){
  * @param count : number of employee structs to have in array
  * @return pointer to first employee in array
  */
-struct Employee* arrayEmployees(int count){
+struct Employee** arrayEmployees(int count){
 
-	int i = 0;//counter initialized to 0
-	struct Employee emp;//create employee in order to
-	int empLength = sizeof(emp);//find size of employee
-	struct Employee* emp2 = malloc(empLength * count);//allocate enough memory for the array
+	struct Employee** emp2 = malloc(sizeof(struct Employee*) * count);//allocate enough memory for the array
+	struct Employee** emp2begin = emp2;//set pointer to beginning of array
 
-	struct Employee empT[count];//create array of proper size
-	struct Employee* empPtr = empT;//set the pointer to the beginning of array
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
-	//while beginning pointer isn't pointed to end of array
-	while (empPtr < endEmpPtr){
+	for(int i = 0; i < count; i++){
 		int randLen = (rand() % 10) + 1;//generate random number 1-10 for length of string
 		struct Employee* emp3 = randomStruct(randLen);//create random employee
-		*(emp2+i) = *emp3;//put randomly created employee into allocated array
-		i++;//increase counter
-		empPtr++;//move pointer forward
+		emp2[i] = emp3;//set randomly created employee struct into array
 	}
 
-	return emp2;//return pointer to array of employee
-	free(emp2);//free memory when done
+	return emp2begin;//return pointer to array of employee
 }
 
 /**
@@ -147,19 +137,13 @@ struct Employee* arrayEmployees(int count){
  * @param count : number of employee structs in given array
  * @return void, prints all arrays
  */
-void printArray(struct Employee* e, int count){
-	int i = 0;//initialize counter to 0
+void printArray(struct Employee** e, int count){
 
-	struct Employee empT[count];//create array of proper size
-	struct Employee* empPtr = empT;//set the pointer to the beginning of array
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
-	//while beginning pointer isn't pointed to end of array
-	while (empPtr < endEmpPtr){
-		struct Employee* emp2 = (e+i);//take the struct from the array
-		printf("Employee %d:\n", i+1);//print employee number
-		printEmployee(emp2);//print employee
-		i++;//increment counter
-		empPtr++;//move pointer forward
+	//loop through array
+	for(int i = 0; i < count; i++){
+		struct Employee *emp = e[i];
+		 printf("Employee %d:\n", i+1);//print employee number
+		 printEmployee(emp);//print employee
 	}
 }
 
@@ -169,25 +153,16 @@ void printArray(struct Employee* e, int count){
  * @param count : size of array to be duplicated
  * @return pointer to duplicated array
  */
-struct Employee* duplicateArray(struct Employee* e, int count){
-	int i = 0;//initialize counter to 0
+struct Employee** duplicateArray(struct Employee** e, int count){
+	struct Employee** emp2 = malloc(sizeof(struct Employee*) * count);//allocate enough memory for the array
+	struct Employee** emp2begin = emp2;//set pointer to the beginning of array
 
-	struct Employee emp;//create an employee in order to
-	int empLength = sizeof(emp);//find its size
-	struct Employee* emp2 = malloc(empLength * count);//allocate enough room for employee array
-
-	struct Employee empT[count];//create array of proper size
-	struct Employee* empPtr = empT;//set the pointer to the beginning of array
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
-	//while beginning pointer isn't pointed to end of array
-	while (empPtr < endEmpPtr){
-		*(emp2+i) = *(e+i);//set pointer of emp2 to what emp is pointing to
-		i++;//increment count
-		empPtr++;//move pointer forward
+	//loop through array
+	for(int i = 0; i < count; i++){
+		emp2[i] = e[i];//set pointers to each other
 	}
 
-	return emp2;//return pointer to emp2
-	free(emp2);//free memory when done
+	return emp2begin;//return pointer to array
 }
 
 /**
@@ -196,11 +171,11 @@ struct Employee* duplicateArray(struct Employee* e, int count){
  * @param count : number of employees in array
  * @return void
  */
-void freeStructs(struct Employee* e, int count){
+void freeStructs(struct Employee** e, int count){
 
 	//frees all individual employee structs in array
-	for (int i = 0; i < count; i++){
-		//free(e[i].name);
+	for (int i = 0; i < 4; i++){
+		free(e[i]);
 	}
 
 	free(e);//frees entire array
@@ -213,32 +188,24 @@ void freeStructs(struct Employee* e, int count){
  * @param count : size of array to be duplicated
  * @return pointer to duplicated array
  */
-struct Employee* duplicateDeepArray(struct Employee* e, int count){
-	int i = 0;//initialize counter to 0
+struct Employee** duplicateDeepArray(struct Employee** e, int count){
 
-	struct Employee emp;//create an employee in order to
-	int empLength = sizeof(emp);//find size of employee
-	struct Employee* emp2 = malloc(empLength * count);//allocate enough memory for employee array
+	struct Employee** emp2 = malloc(sizeof(struct Employee*) * count);//allocate enough memory for the array
+	struct Employee** emp2begin = emp2;//save pointer to beginning of array
 
-
-	struct Employee empT[count];//create array of proper size
-	struct Employee* empPtr = empT;//set the pointer to the beginning of array
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
-	//while beginning pointer isn't pointed to end of array
-	while (empPtr < endEmpPtr){
-		emp2[i].birth_year = e[i].birth_year;//copy over content of birth year
-		emp2[i].start_year = e[i].start_year;//copy over content of start year
-		int nameLength = strlen(e[i].name);//find size of name field
+	//loop through array
+	for(int i = 0; i < count; i++){
+		emp2[i][i].birth_year = e[i][i].birth_year;//copy over content of birth year
+		emp2[i][i].start_year = e[i][i].start_year;//copy over content of start year
+		int nameLength = strlen(e[i][i].name);//find size of name field
 		//copy over content of name
 		for (int j = 0; j < nameLength; j++){
-			emp2[i].name[j] = e[i].name[j];
-		}
-		i++;//increase counter
-		empPtr++;//move pointer forward
+			emp2[i][i].name[j] = e[i][i].name[j];
+			}
 	}
 
-	return emp2;//return pointer to created array
-	free(emp2);//free memory when done with it
+	return emp2begin;//return pointer to array of employee
+
 }
 
 
