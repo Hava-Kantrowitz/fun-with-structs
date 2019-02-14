@@ -17,22 +17,23 @@
  */
 struct Employee* makeEmployee(int birth, int start, const char *name) {
 
-	struct Employee emp;
-	int empLength = sizeof(emp);
+	struct Employee emp;//Create an employee struct
+	int empLength = sizeof(emp);//Take size of it
 
-	struct Employee* emp2 = malloc(empLength);
-	emp2->birth_year = birth;
-	emp2->start_year = start;
+	struct Employee* emp2 = malloc(empLength);//Allocate enough memory for an employee
+	emp2->birth_year = birth;//set birth year
+	emp2->start_year = start;//set start year
 	int i = 0;
+	//set name field
 	while (*name != '\0'){
 		emp2->name[i] = *name;
 		name++;
 		i++;
 	}
-	emp2->name[i+1] = '\0';
+	emp2->name[i+1] = '\0';//Make sure name ends with null pointer
 
-	return emp2; // Replace this with a pointer to the allocated struct
-	free(emp2);
+	return emp2; // Return pointer to allocated struct
+	free(emp2);//free after use
 }
 
 /**
@@ -42,11 +43,12 @@ struct Employee* makeEmployee(int birth, int start, const char *name) {
  */
 void printEmployee(struct Employee *e) {
 
-	int birthYear = e->birth_year;
-	int startYear = e->start_year;
-	char* name = e->name;
+	int birthYear = e->birth_year;//grab birth year
+	int startYear = e->start_year;//grab start year
+	char* name = e->name;//grab name
 
 
+	//print all fields
 	printf("Birth year = %d\n", birthYear);
 	printf("Starting year = %d\n", startYear);
 	printf("Name = %s\n", name);
@@ -61,9 +63,9 @@ void printEmployee(struct Employee *e) {
  * 			Be born and start working sometime between that time frame
  */
 int randomNumber(){
-	int number = rand() % 2001;
-	int usefulNumber = number + 1000;
-	return usefulNumber;
+	int number = rand() % 2001;//Generates random number between 0-2000
+	int usefulNumber = number + 1000;//Makes sure random number is between 1000-3000
+	return usefulNumber;//return random number
 }
 
 /**
@@ -71,9 +73,10 @@ int randomNumber(){
  * @return a capital letter, A-Z
  */
 char randomCharacter(){
-	int number = rand() % 26;
+	int number = rand() % 26;//generates random number 0-25
+	//goes through letters constant (see .h) and finds the one at the location pointed to by number
 	char letter = *(letters+number);
-	return letter;
+	return letter;//returns the character
 }
 
 /**
@@ -83,14 +86,15 @@ char randomCharacter(){
  * 		String could contain letters A-Z
  */
 char* randomString(int stringLen){
-	int charSize = sizeof(char);
-	char* randString = malloc((charSize*stringLen) + 1);
+	int charSize = sizeof(char);//finds the size of characters
+	char* randString = malloc((charSize*stringLen) + 1);//allocates enough room for the string
+	//populates the string with random characters
 	for (int i = 0; i < stringLen; i++){
 		randString[i] = randomCharacter();
 	}
-	randString[stringLen] = '\0';
+	randString[stringLen] = '\0';//makes sure string is null terminated
 
-	return randString;
+	return randString;//returns string
 
 }
 
@@ -100,12 +104,12 @@ char* randomString(int stringLen){
  * @return pointer to created employee struct
  */
 struct Employee* randomStruct(int stringLen){
-	int birth = randomNumber();
-	int start = randomNumber();
-	char* name = randomString(stringLen);
+	int birth = randomNumber();//generates random birth year
+	int start = randomNumber();//generates random start year
+	char* name = randomString(stringLen);//generates random string of given length
 
-	struct Employee* emp = makeEmployee(birth, start, name);
-	return emp;
+	struct Employee* emp = makeEmployee(birth, start, name);//creates an employee with this info
+	return emp;//returns pointer to the employee
 }
 
 /**
@@ -116,24 +120,25 @@ struct Employee* randomStruct(int stringLen){
  */
 struct Employee* arrayEmployees(int count){
 
-	int i = 0;
-	struct Employee emp;
-	int empLength = sizeof(emp);
-	struct Employee* emp2 = malloc(empLength * count);
+	int i = 0;//counter initialized to 0
+	struct Employee emp;//create employee in order to
+	int empLength = sizeof(emp);//find size of employee
+	struct Employee* emp2 = malloc(empLength * count);//allocate enough memory for the array
 
-	struct Employee empT[count];
-	struct Employee* empPtr = empT;
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+	struct Employee empT[count];//create array of proper size
+	struct Employee* empPtr = empT;//set the pointer to the beginning of array
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
+	//while beginning pointer isn't pointed to end of array
 	while (empPtr < endEmpPtr){
-		int randLen = (rand() % 10) + 1;
-		struct Employee* emp3 = randomStruct(randLen);
-		*(emp2+i) = *emp3;
-		i++;
-		empPtr++;
+		int randLen = (rand() % 10) + 1;//generate random number 1-10 for length of string
+		struct Employee* emp3 = randomStruct(randLen);//create random employee
+		*(emp2+i) = *emp3;//put randomly created employee into allocated array
+		i++;//increase counter
+		empPtr++;//move pointer forward
 	}
 
-	return emp2;
-	free(emp2);
+	return emp2;//return pointer to array of employee
+	free(emp2);//free memory when done
 }
 
 /**
@@ -143,17 +148,18 @@ struct Employee* arrayEmployees(int count){
  * @return void, prints all arrays
  */
 void printArray(struct Employee* e, int count){
-	int i = 0;
+	int i = 0;//initialize counter to 0
 
-	struct Employee empT[count];
-	struct Employee* empPtr = empT;
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+	struct Employee empT[count];//create array of proper size
+	struct Employee* empPtr = empT;//set the pointer to the beginning of array
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
+	//while beginning pointer isn't pointed to end of array
 	while (empPtr < endEmpPtr){
-		struct Employee* emp2 = (e+i);
-		printf("Employee %d:\n", i+1);
-		printEmployee(emp2);
-		i++;
-		empPtr++;
+		struct Employee* emp2 = (e+i);//take the struct from the array
+		printf("Employee %d:\n", i+1);//print employee number
+		printEmployee(emp2);//print employee
+		i++;//increment counter
+		empPtr++;//move pointer forward
 	}
 }
 
@@ -164,23 +170,24 @@ void printArray(struct Employee* e, int count){
  * @return pointer to duplicated array
  */
 struct Employee* duplicateArray(struct Employee* e, int count){
-	int i = 0;
+	int i = 0;//initialize counter to 0
 
-	struct Employee emp;
-	int empLength = sizeof(emp);
-	struct Employee* emp2 = malloc(empLength * count);
+	struct Employee emp;//create an employee in order to
+	int empLength = sizeof(emp);//find its size
+	struct Employee* emp2 = malloc(empLength * count);//allocate enough room for employee array
 
-	struct Employee empT[count];
-	struct Employee* empPtr = empT;
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+	struct Employee empT[count];//create array of proper size
+	struct Employee* empPtr = empT;//set the pointer to the beginning of array
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
+	//while beginning pointer isn't pointed to end of array
 	while (empPtr < endEmpPtr){
-		*(emp2+i) = *(e+i);
-		i++;
-		empPtr++;
+		*(emp2+i) = *(e+i);//set pointer of emp2 to what emp is pointing to
+		i++;//increment count
+		empPtr++;//move pointer forward
 	}
 
-	return emp2;
-	free(emp2);
+	return emp2;//return pointer to emp2
+	free(emp2);//free memory when done
 }
 
 /**
@@ -191,11 +198,12 @@ struct Employee* duplicateArray(struct Employee* e, int count){
  */
 void freeStructs(struct Employee* e, int count){
 
+	//frees all individual employee structs in array
 	for (int i = 0; i < count; i++){
-		free(e);
+		//free(e[i].name);
 	}
 
-	free(e);
+	free(e);//frees entire array
 
 }
 
@@ -206,28 +214,31 @@ void freeStructs(struct Employee* e, int count){
  * @return pointer to duplicated array
  */
 struct Employee* duplicateDeepArray(struct Employee* e, int count){
-	int i = 0;
+	int i = 0;//initialize counter to 0
 
-	struct Employee emp;
-	int empLength = sizeof(emp);
-	struct Employee* emp2 = malloc(empLength * count);
-	int nameLength = strlen(e->name);
+	struct Employee emp;//create an employee in order to
+	int empLength = sizeof(emp);//find size of employee
+	struct Employee* emp2 = malloc(empLength * count);//allocate enough memory for employee array
 
-	struct Employee empT[count];
-	struct Employee* empPtr = empT;
-	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);
+
+	struct Employee empT[count];//create array of proper size
+	struct Employee* empPtr = empT;//set the pointer to the beginning of array
+	struct Employee* endEmpPtr = empT + sizeof(empT)/sizeof(empT[0]);//set pointer to end of array
+	//while beginning pointer isn't pointed to end of array
 	while (empPtr < endEmpPtr){
-		emp2[i].birth_year = e[i].birth_year;
-		emp2[i].start_year = e[i].start_year;
+		emp2[i].birth_year = e[i].birth_year;//copy over content of birth year
+		emp2[i].start_year = e[i].start_year;//copy over content of start year
+		int nameLength = strlen(e[i].name);//find size of name field
+		//copy over content of name
 		for (int j = 0; j < nameLength; j++){
 			emp2[i].name[j] = e[i].name[j];
 		}
-		i++;
-		empPtr++;
+		i++;//increase counter
+		empPtr++;//move pointer forward
 	}
 
-	return emp2;
-	free(emp2);
+	return emp2;//return pointer to created array
+	free(emp2);//free memory when done with it
 }
 
 

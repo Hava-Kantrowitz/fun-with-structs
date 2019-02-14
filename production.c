@@ -14,7 +14,7 @@
  */
 bool production(int argc, char* argv[])
 {
-	bool ans = true;
+	bool ans = true;//returns true always
 
 	return ans;
 }

@@ -13,6 +13,7 @@
  */
 int main(int argc, char *argv[]) {
 	puts("!!!Hello class, we are working HW3B!!!"); /* prints !!!Hello World!!! */
+	//If tests pass, let user know and start production
 	if(tests())
 	{
 		puts("Tests succeeded.");
@@ -25,10 +26,11 @@ int main(int argc, char *argv[]) {
 			puts("Tests succeeded, but production didn't");
 		}
 	}
+	//Tests don't pass, let user know
 	else
 	{
 		puts("Tests did not succeed.");
 	}
 
-	return EXIT_SUCCESS;
+	return EXIT_SUCCESS;//return if success
 }

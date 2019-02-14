@@ -19,9 +19,10 @@
  */
 bool tests(void)
 {
-	srand(time(0));
-	bool ok = false;
+	srand(time(0));//seeds the random time
+	bool ok = false;//sets ok to result of all tests
 
+	//runs all individual tests
 	bool ok1 = testPrintEmployee();
 	if (ok1) {
 		puts("printEmployee() passed.");
@@ -73,7 +74,7 @@ bool tests(void)
 	}
 
 	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 && ok8 && ok9 && ok10; // Did all tests pass?
-	return ok;
+	return ok;//return result of all tests
 }
 
 /**
@@ -90,7 +91,7 @@ bool testPrintEmployee() {
 	strncpy(e.name, "Mike Ciaraldi", MAX_NAME);
 	e.name[MAX_NAME] = '\0'; // Be sure string is terminated.
 
-	printEmployee(&e);
+	printEmployee(&e);//print the employee
 
 	return true;
 }
@@ -102,8 +103,8 @@ bool testPrintEmployee() {
 bool testMakeEmployee() {
 	struct Employee *e;
 
-	e = makeEmployee(1952, 1999, "Mike Ciaraldi");
-	printEmployee(e);
+	e = makeEmployee(1952, 1999, "Mike Ciaraldi");//creates employee
+	printEmployee(e);//prints it
 
 	return true;
 }
@@ -114,15 +115,16 @@ bool testMakeEmployee() {
  * 		false otherwise
  */
 bool testRandomInteger(){
-	int number = randomNumber();
-	bool ok = false;
+	int number = randomNumber();//generates random number
+	bool ok = false;//initializes result to false
 
+	//If random number falls with in allowed range, print number and set test to true
 	if (number >= 1000 && number <= 3000){
 		ok = true;
 		printf("Random integer is: %d\n", number);
 	}
 
-	return ok;
+	return ok;//return result of test
 }
 
 /**
@@ -131,10 +133,10 @@ bool testRandomInteger(){
  * @return true, only way to tell if worked is to look at output
  */
 bool testRandomChar(){
-	char letter = randomCharacter();
+	char letter = randomCharacter();//generates random char
 	bool ok = true;
 
-	printf("Random letter is: %c\n", letter);
+	printf("Random letter is: %c\n", letter);//prints it
 	return ok;
 }
 
@@ -144,17 +146,18 @@ bool testRandomChar(){
  * @return true if string is of given length, false otherwise
  */
 bool testRandomString(){
-	char* string = randomString(6);
-	bool ok = false;
+	char* string = randomString(6);//generates random string
+	bool ok = false;//result of test, initialized to false
 
-	int len = strlen(string);
+	int len = strlen(string);//finds length of string
 
+	//If length is correct, set result to true
 	if (len == 6){
 		ok = true;
 	}
 
-	printf("Random string is %s\n", string);
-	return ok;
+	printf("Random string is %s\n", string);//print string
+	return ok;//return result
 }
 
 /**
@@ -165,8 +168,8 @@ bool testRandomString(){
 bool testRandomEmployee(){
 	struct Employee *e;
 
-	e = randomStruct(12);
-	printEmployee(e);
+	e = randomStruct(12);//creates random employee
+	printEmployee(e);//prints it
 
 	return true;
 }
@@ -178,8 +181,8 @@ bool testRandomEmployee(){
  */
 bool testArrayEmployees(){
 	bool ok = true;
-	struct Employee* emp = arrayEmployees(4);
-	printArray(emp, 4);
+	struct Employee* emp = arrayEmployees(4);//creates array of random employees
+	printArray(emp, 4);//prints the array
 	return ok;
 }
 
@@ -188,39 +191,47 @@ bool testArrayEmployees(){
  * @true if duplicated array is same as original array, false otherwise
  */
 bool testDuplicateEmployees(){
-	bool ok = false;
-	bool ok1 = false;
-	bool ok2 = false;
-	bool ok3 = false;
+	bool ok = false;//result of overall test, initialized to false
+	bool ok1 = false;//result of subtest 1, initialized to false
+	bool ok2 = false;//result of subtest 2, initialized to false
+	bool ok3 = false;//result of subtest 3, initialized to false
 
-	struct Employee* emp = arrayEmployees(4);
-	printArray(emp, 4);
-	struct Employee* emp2 = duplicateArray(emp, 4);
-	printArray(emp2, 4);
+	struct Employee* emp = arrayEmployees(4);//creates array
+	printArray(emp, 4);//prints it
+	struct Employee* emp2 = duplicateArray(emp, 4);//duplicates array
+	printArray(emp2, 4);//prints duplicated array
 
+	//If birth year is same, set test 1 to true
 	if(emp[1].birth_year == emp2[1].birth_year){
 		ok1 = true;
 	}
 
+	//If start year is same, set result 2 to true
 	if(emp[2].start_year == emp2[2].start_year){
 		ok2 = true;
 	}
 
+	//If name is the same, set result 3 to true
 	if(strcmp(emp[3].name, emp2[3].name) == 0){
 		ok3 = true;
 	}
 
-	ok = ok1 && ok2 && ok3;
-	return ok;
+	ok = ok1 && ok2 && ok3;//set overall test to results of subtest
+	return ok;//return overall result
 }
 
+/**
+ * Frees structs contained in an array
+ * @return true, no way to tell if memory was actually freed
+ * running this test without errors is considered a demonstration of it working
+ */
 bool testFreeArray(){
-	bool ok = true;
-	struct Employee* emp = arrayEmployees(4);
-	freeStructs(emp, 4);
+	bool ok = true;//set test result to true
+	struct Employee* emp = arrayEmployees(4);//create an array of employees
+	freeStructs(emp, 4);//free the memory created
 
 
-	return ok;
+	return ok;//return result of test
 }
 
 /**
@@ -228,28 +239,31 @@ bool testFreeArray(){
  * @true if duplicated array is same as original array, false otherwise
  */
 bool testDuplicateDeep(){
-	bool ok = false;
-	bool ok1 = false;
-	bool ok2 = false;
-	bool ok3 = false;
+	bool ok = false;//result of overall test, initialized to false
+	bool ok1 = false;//result of subtest 1, initialized to false
+	bool ok2 = false;//result of subtest 2, initialized to false
+	bool ok3 = false;//result of subtest 3, initialized to false
 
-	struct Employee* emp = arrayEmployees(4);
-	printArray(emp, 4);
-	struct Employee* emp2 = duplicateDeepArray(emp, 4);
-	printArray(emp2, 4);
+	struct Employee* emp = arrayEmployees(4);//creates array
+	printArray(emp, 4);//prints it
+	struct Employee* emp2 = duplicateDeepArray(emp, 4);//duplicates array
+	printArray(emp2, 4);//prints duplicated array
 
+	//If birth year is same, set test 1 to true
 	if(emp[1].birth_year == emp2[1].birth_year){
 		ok1 = true;
 	}
 
+	//If start year is same, set result 2 to true
 	if(emp[2].start_year == emp2[2].start_year){
 		ok2 = true;
 	}
 
+	//If name is the same, set result 3 to true
 	if(strcmp(emp[3].name, emp2[3].name) == 0){
 		ok3 = true;
 	}
 
-	ok = ok1 && ok2 && ok3;
-	return ok;
+	ok = ok1 && ok2 && ok3;//set overall test to results of subtest
+	return ok;//return overall result
 }
