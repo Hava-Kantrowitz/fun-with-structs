@@ -1,26 +1,26 @@
-all: HW3B
+# Makefile for HW3starter
 
-# Set CFLAGS to allow Debug and issue all warnings.
 CFLAGS = -g -Wall
 
-HW3B: HW3B.o mystruct.o tests.o production.o
-	gcc $(CFLAGS) HW3B.o mystruct.o tests.o production.o -o HW3B
+all: HW3A
 
-HW3B.o: HW3B.c mystruct.h tests.h production.h
-	gcc $(CFLAGS) -c HW3B.c
+HW3A: HW3A.o tests.o production.o mystring.o
+	gcc $(CFLAGS) HW3A.o tests.o production.o mystring.o -o HW3A
 
-tests.o: tests.c mystruct.h tests.h production.h
+HW3A.o: HW3A.c production.h tests.h
+	gcc $(CFLAGS) -c HW3A.c
+
+tests.o: tests.c production.h tests.h mystring.h
 	gcc $(CFLAGS) -c tests.c
-	
-production.o: production.c mystruct.h
-	gcc $(CFLAGS) -c production.c	
 
-mystruct.o: mystruct.c mystruct.h
-	gcc $(CFLAGS) -c mystruct.c
+production.o: production.c production.h mystring.h
+	gcc $(CFLAGS) -c production.c
+
+mystring.o: mystring.c mystring.h
+	gcc $(CFLAGS) -c mystring.c
 
 clean:
-	rm -f *.o HW3B
-	rm -f -r html latex
+	rm -r -f *.o HW3A html latex
 
 docs:
 	doxygen

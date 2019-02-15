@@ -1,20 +1,22 @@
 /*
  * production.c
  *
- *  Created on: 2/8/19
+ *  Created on: Feb 4, 2019
  *      Author: Hava Kantrowitz
  */
 
 #include "production.h"
-#include "mystruct.h"
+#include "mystring.h"
 
 /** Production part of the application.
  * Does not do anything in this case.
+ * @param argc: number of arguments on command line
+ * @param argv: character array of arguments on command line
  * @return true.
  */
 bool production(int argc, char* argv[])
 {
-	bool ans = true;//returns true always
+	bool ans = true;
 
 	return ans;
 }

@@ -1,277 +1,434 @@
 /*
  * tests.c
  *
- *  Created on: 2/8/19
+ *  Created on: Feb 4, 2019
  *      Author: Hava Kantrowitz
  */
-
 
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include "tests.h"
 #include "production.h"
-#include "mystruct.h"
+#include "mystring.h"
 
 /**
- * determines if all tests run properly
- * @return true if all tests run successfully, false otherwise
+ * determines whether tests of functions work properly
+ * @return true if all tests pass, false otherwise
  */
 bool tests(void)
 {
-	srand(time(0));//seeds the random time
-	bool ok = false;//sets ok to result of all tests
+	bool ok = false;//whether all tests pass, initialized to false
 
-	//runs all individual tests
-	bool ok1 = testPrintEmployee();
+	//Tests mystrlen1, lets user know if passed
+	bool ok1 = testMystrlen1();
 	if (ok1) {
-		puts("printEmployee() passed.");
+		puts("mystrlen1() passed.");
 	}
 
-	bool ok2 = testMakeEmployee();
+	//Tests mystrlen2, lets user know if passed
+	bool ok2 = testMystrlen2();
 	if (ok2) {
-		puts("makeEmployee() passed.");
+		puts("mystrlen2() passed.");
 	}
 
-	bool ok3 = testRandomInteger();
-	if (ok3){
-		puts("randomInteger() passed.");
+	//Tests mystrdup, lets user know if passed
+	bool ok3 = testMystrdup();
+	if (ok3) {
+		puts("mystrdup() passed.");
 	}
 
-	bool ok4 = testRandomChar();
-	if(ok4){
-		puts("randomCharacter() passed.");
+	//Tests mystrncpy, lets user know if passed
+	bool ok4 = testMystrncpy();
+	if (ok4) {
+		puts("mystrncpy() passed.");
 	}
 
-	bool ok5 = testRandomString();
-	if(ok5){
-		puts("randomString() passed.");
+	//Tests mystrcpy, lets user know if passed
+	bool ok5 = testMystrcpy();
+	if (ok5) {
+		puts("mystrcpy() passed.");
 	}
 
-	bool ok6 = testRandomEmployee();
-	if(ok6){
-		puts("randomEmployee() passed.");
+	//Tests mystrncat, lets user know if passed
+	bool ok6 = testMystrncat();
+	if (ok6) {
+		puts("mystrncat() passed.");
 	}
 
-	bool ok7 = testArrayEmployees();
-	if(ok7){
-		puts("arrayEmployee() passed.");
+
+	//Tests mystrcat, lets user know if passed
+	bool ok7 = testMystrcat();
+	if (ok7) {
+		puts("mystrcat() passed.");
 	}
 
-	bool ok8 = testDuplicateEmployees();
-	if(ok8){
-		puts("duplicateEmployees() passed.");
+
+	//Tests mystrndup, lets user know if passed
+	bool ok8 = testMystrndup();
+	if (ok8) {
+		puts("mystrndup() passed.");
 	}
 
-	bool ok9 = testDuplicateDeep();
-	//bool ok9 = true;
-	if(ok9){
-		puts("duplicateDeep() passed.");
-	}
+	//Any commented out print statements in the functions below
+	//Were used in debugging
+	//I kept these in to show my debugging process and the work that went into it
+	//But commented them out to avoid cluttering the console
 
-	bool ok10 = testFreeArray();
-	if(ok10){
-		puts("freeStructs() passed.");
-	}
-
-	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 && ok8 && ok9 && ok10; // Did all tests pass?
-	return ok;//return result of all tests
-}
-
-/**
- * Test the printEmployee() function by creating a known struct and printing it.
- * @return true. The only way to tell if it succeeds is to look at the output.
- */
-
-bool testPrintEmployee() {
-
-	struct Employee e; // Variable to hold employee
-	e.birth_year = 1952; // Put data into numeric fields
-	e.start_year = 1999;
-	// Copy into string field. Be sure not to overflow it.
-	strncpy(e.name, "Mike Ciaraldi", MAX_NAME);
-	e.name[MAX_NAME] = '\0'; // Be sure string is terminated.
-
-	printEmployee(&e);//print the employee
-
-	return true;
-}
-
-
-/** Test the make Employee() function by making an employee with known data and printing it.
- * @return true. The only way to tell if it succeeds is to look at the output.
- */
-bool testMakeEmployee() {
-	struct Employee *e;
-
-	e = makeEmployee(1952, 1999, "Mike Ciaraldi");//creates employee
-	printEmployee(e);//prints it
-
-	return true;
-}
-
-/**
- * Tests that a random integer is generated
- * @return true if an integer between 1000 and 3000 inclusive is generated
- * 		false otherwise
- */
-bool testRandomInteger(){
-	int number = randomNumber();//generates random number
-	bool ok = false;//initializes result to false
-
-	//If random number falls with in allowed range, print number and set test to true
-	if (number >= 1000 && number <= 3000){
-		ok = true;
-		printf("Random integer is: %d\n", number);
-	}
-
-	return ok;//return result of test
-}
-
-/**
- * Tests that a random character is generated
- * Prints letter
- * @return true, only way to tell if worked is to look at output
- */
-bool testRandomChar(){
-	char letter = randomCharacter();//generates random char
-	bool ok = true;
-
-	printf("Random letter is: %c\n", letter);//prints it
+	//Set results of all individual tests to the overall result
+	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 && ok8; // Did all tests pass?
 	return ok;
 }
 
-/**
- * Tests that a random string is generated
- * Prints string
- * @return true if string is of given length, false otherwise
+/** Tests the mystrlen1() function by comparing it to how the standard strlen() works..
+ * @return true if it passes all tests.
  */
-bool testRandomString(){
-	char* string = randomString(6);//generates random string
-	bool ok = false;//result of test, initialized to false
+bool testMystrlen1(void) {
+	bool ok = false; // True if all tests passed
+	bool ok1 = false; // Individual test results
+	bool ok2 = false;
 
-	int len = strlen(string);//finds length of string
-
-	//If length is correct, set result to true
-	if (len == 6){
-		ok = true;
+	char* s1 = "Some sample string."; // String we will take the length of.
+	size_t l1a = strlen(s1); // Get the lengths with the two functions.
+	size_t l1b = mystrlen1(s1);
+	//Compare lengths of two strings, set to true if same
+	if (l1a == l1b) {
+		ok1 = true;
 	}
 
-	printf("Random string is %s\n", string);//print string
-	return ok;//return result
+	char* s2 = ""; // Empty string.
+	size_t l2a = strlen(s2); // Get the lengths with the two functions.
+	size_t l2b = mystrlen1(s2);
+	//Compare lengths of two strings, set to true if same
+	if (l2a == l2b) {
+		ok2 = true;
+	}
+
+	ok = ok1 && ok2;//set overall results to results of individual tests
+	return ok;//return overall results
 }
 
-/**
- * Tests the creation of an employee struct filled with random data
- * Prints the employee
- * @return true, only way to tell if worked is to look at output
+
+/** Tests the mystrlen2() function by comparing it to how the standard strlen() works..
+ * @return true if it passes all tests.
  */
-bool testRandomEmployee(){
-	struct Employee *e;
+bool testMystrlen2(void) {
+	bool ok = false; // True if all tests passed
+	bool ok1 = false; // Individual test results
+	bool ok2 = false;
 
-	e = randomStruct(12);//creates random employee
-	printEmployee(e);//prints it
+	char* s1 = "Some sample string."; // String we will take the length of.
+	size_t l1a = strlen(s1); // Get the lengths with the two functions.
+	size_t l1b = mystrlen2(s1);
+	if (l1a == l1b) {
+		ok1 = true;
+	}
 
-	return true;
-}
+	char* s2 = ""; // Empty string.
+	size_t l2a = strlen(s2); // Get the lengths with the two functions.
+	size_t l2b = mystrlen2(s2);
+	if (l2a == l2b) {
+		ok2 = true;
+	}
 
-/**
- * Tests the creation of an array of employee structs
- * Prints them out, thereby testing the printing of an array of employees
- * @return true, only way to tell if worked is to look at output
- */
-bool testArrayEmployees(){
-	bool ok = true;
-	struct Employee** emp = arrayEmployees(4);//creates array of random employees
-	printArray(emp, 4);//prints the array
+	ok = ok1 && ok2;
+	return ok;
 	return ok;
 }
 
-/**
- * Tests whether duplication of employee pointers works
- * @true if duplicated array is same as original array, false otherwise
+/** Test mystrdup() function by comparing it to the standard strdup().
+ * @return true if it passes all tests.
  */
-bool testDuplicateEmployees(){
-	bool ok = false;//result of overall test, initialized to false
-	bool ok1 = false;//result of subtest 1, initialized to false
-	bool ok2 = false;//result of subtest 2, initialized to false
-	bool ok3 = false;//result of subtest 3, initialized to false
+bool testMystrdup() {
+	bool ok1 = false;
 
-	struct Employee** emp = arrayEmployees(4);//creates array
-	printArray(emp, 4);//prints it
-	struct Employee** emp2 = duplicateArray(emp, 4);//duplicates array
-	printArray(emp2, 4);//prints duplicated array
+	char s1[] = "Some sample string."; // String we will duplicate.
+	char* s2 = strdup(s1); // Copy it using standard function
+	char* s3 = mystrdup(s1); // Copy it using my function
 
-	//If birth year is same, set test 1 to true
-	if(emp[1][1].birth_year == emp2[1][1].birth_year){
+	if (strcmp(s2, s3) == 0) { // Same result!
 		ok1 = true;
 	}
 
-	//If start year is same, set result 2 to true
-	if(emp[2][2].start_year == emp2[2][2].start_year){
+	char* s4 = "Some other string."; // Another string for testing
+	printf("Address of a local variable ok1, on stack:   %p\n", &ok1);
+	printf("Address of original string, on stack:        %p\n", s1);
+	printf("Address of first duplicate string, on heap:  %p\n", s2);
+	printf("Address of second duplicate string, on heap: %p\n", s3);
+	printf("Address of other string, on heap?:           %p\n", s4);
+
+	bool ok = ok1;
+	return ok;
+}
+
+/*
+ * Test mystrcpy() function.
+ * @return true if pass, false if fail.
+ */
+bool testMystrcpy() {
+	bool ok = false;//Result of overall test, initialized to false
+	bool ok1 = false;//Results of individual tests, initialized to false
+	bool ok2 = false;
+
+	char s1[] = "Some sample string."; // String we will copy.
+	char s2[30]; // Empty string we will copy into
+
+	char* s3 = mystrcpy(s2, s1); // Copy the string
+	if (strcmp(s1, s2) == 0) { // Does original equal copy?
+		ok1 = true; // Yes!
+	}
+
+	if (s3 == s2) { // Is the return value correct?
+		ok2 = true; // Yes!
+	}
+
+	ok = ok1 && ok2;//Set individual results to overall
+	return ok;//Return overall result
+}
+
+/*
+ * Test mystrncpy() function.
+ * @return true if pass, false if fail.
+ */
+
+bool testMystrncpy() {
+
+	bool ok = false;//overall results, initialized to false
+
+	//n is shorter than src
+	bool ok1 = false;//result of first test, initialized to false
+	char s1a[] = "012345678901234567890123456789"; // A long string
+	char s2a[] = "ABCDEF"; // A short string we will copy into it.
+	char* s3a = strncpy(s1a, s2a, 2); // The result
+
+	//printf("In testMystrncpy(): s3a = /%s/\n", s3a);
+
+	char s1b[] = "012345678901234567890123456789"; // A long string
+	char s2b[] = "ABCDEF"; // A short string we will copy into it.
+	char* s3b = mystrncpy(s1b, s2b, 2); // The result
+
+	//If the two strings are the same, set first test to true
+	if (strcmp(s3a, s3b) == 0) {
+		ok1 = true;
+		//printf("1 succeeded.\n");
+	}
+
+
+	//n is longer than src
+	bool ok2 = false;//result of second test, initialized to false
+	char s1a2[] = "012345678901234567890123456789"; // A long string
+	char s2a2[] = "ABCDEF"; // A short string we will copy into it.
+	char* s3a2 = strncpy(s1a2, s2a2, 12); // The result
+
+	//printf("In testMystrncpy(): s3a = /%s/\n", s3a);
+
+	char s1b2[] = "012345678901234567890123456789"; // A long string
+	char s2b2[] = "ABCDEF"; // A short string we will copy into it.
+	char* s3b2 = mystrncpy(s1b2, s2b2, 12); // The result
+
+	//If strings are the same, set second test to true
+	if (strcmp(s3a2, s3b2) == 0) {
 		ok2 = true;
+		//printf("2 succeeded.\n");
 	}
 
-	//If name is the same, set result 3 to true
-	if(strcmp(emp[3][3].name, emp2[3][3].name) == 0){
+	//n is equal to src
+	bool ok3 = false;//result of third test, initialized to false
+	char s1a3[] = "012345678901234567890123456789"; // A long string
+	char s2a3[] = "ABCDEF"; // A short string we will copy into it.
+	char* s3a3 = strncpy(s1a3, s2a3, 6); // The result
+
+	//printf("In testMystrncpy(): s3a = /%s/\n", s3a);
+
+	char s1b3[] = "012345678901234567890123456789"; // A long string
+	char s2b3[] = "ABCDEF"; // A short string we will copy into it.
+	char* s3b3 = mystrncpy(s1b3, s2b3, 6); // The result
+
+	//If strings are the same, set third test to true
+	if (strcmp(s3a3, s3b3) == 0) {
 		ok3 = true;
+		//printf("3 succeeded.\n");
 	}
 
-	ok = ok1 && ok2 && ok3;//set overall test to results of subtest
-	return ok;//return overall result
+	ok = ok1 && ok2 && ok3;//Set result of overall equal to result of indiv tests
+	return ok;//Return overall result
 }
 
-/**
- * Frees structs contained in an array
- * @return true, no way to tell if memory was actually freed
- * running this test without errors is considered a demonstration of it working
+/*
+ * Test mystrncat() function by comparing it to standard strncat() function.
+ * @return true if pass, false if fail.
  */
+bool testMystrncat() {
+	bool ok = false;//Result of overall test, initialized to false
 
-bool testFreeArray(){
-	bool ok = true;//set test result to true
-	struct Employee** emp = arrayEmployees(4);//create an array of employees
-	freeStructs(emp, 4);//free the memory created
+	//n is less than src
+	bool ok1 = false;//Results of individual subtests of test 1, initialized to false
+	bool ok2 = false;
 
+	char s1a[] = "012345678901234567890123456789"; // A long string
+	char s2a[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1a, s2a);
+	char* s4a =	strncat(s1a, s2a, 2); // The result
 
-	return ok;//return result of test
-}
+	//printf("In testMystrncat(): s1a = /%s/\n", s1a);
+	//printf("In testMystrncat(): s4a = /%s/\n", s4a);
 
+	char s1b[] = "012345678901234567890123456789"; // A long string
+	char s2b[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1b, s2b);
+	char* s4b = mystrncat(s1b, s2b, 2); // The result
 
+	//printf("Long1: %s\n", s1a);
+	//printf("Long2: %s\n", s1b);
 
-/**
- * Tests whether duplication of employee content works
- * @true if duplicated array is same as original array, false otherwise
- */
-bool testDuplicateDeep(){
-	bool ok = false;//result of overall test, initialized to false
-	bool ok1 = false;//result of subtest 1, initialized to false
-	bool ok2 = false;//result of subtest 2, initialized to false
-	bool ok3 = false;//result of subtest 3, initialized to false
+	//printf("Short1: %s\n", s2a);
+	//printf("Short2: %s\n", s2b);
 
-	struct Employee** emp2 = arrayEmployees(4);//creates array
-	printArray(emp2, 4);//prints it
-	struct Employee** emp3 = duplicateDeepArray(emp2, 4);//duplicates array
-	printArray(emp2, 4);//prints duplicated array
+	//printf("copy1: %s\n", s3a);
+	//printf("copy2: %s\n", s3b);
 
-	//If birth year is same, set test 1 to true
-	if(emp2[1][1].birth_year == emp3[1][1].birth_year){
+	//printf("Concat1: %s\n", s4a);
+	//printf("Concat2: %s\n", s4b);
+
+	//If the strings are the same, set subtest results to true
+	if (strcmp(s1a, s1b) == 0) {
 		ok1 = true;
 	}
 
-	//If start year is same, set result 2 to true
-	if(emp2[2][2].start_year == emp3[2][2].start_year){
+	if (strcmp(s4a, s4b) == 0) {
 		ok2 = true;
 	}
 
-	//If name is the same, set result 3 to true
-	if(strcmp(emp2[3][3].name, emp3[3][3].name) == 0){
+	//printf("Ok1: %i\n", ok1);
+	//printf("Ok2: %i\n", ok2);
+
+	//n is greater than src
+	bool ok3 = false;//Results of individual subtests of test 2, initialized to false
+	bool ok4 = false;
+
+	char s1a1[] = "012345678901234567890123456789"; // A long string
+	char s2a1[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1a1, s2a1);
+	char* s4a1 =	strncat(s1a1, s2a1, 10); // The result
+
+	char s1b1[] = "012345678901234567890123456789"; // A long string
+	char s2b1[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1b1, s2b1);
+	char* s4b1 = mystrncat(s1b1, s2b1, 10); // The result
+
+	//If strings are the same, set subtest results to true
+	if (strcmp(s1a1, s1b1) == 0) {
 		ok3 = true;
 	}
 
+	if (strcmp(s4a1, s4b1) == 0) {
+		ok4 = true;
+	}
 
-	ok = ok1 && ok2 && ok3;//set overall test to results of subtest
-	return ok;//return overall result
+	//n is equal to src
+	bool ok5 = false;//Results of individual subtests of test 1, initialized to false
+	bool ok6 = false;
+
+	char s1a2[] = "012345678901234567890123456789"; // A long string
+	char s2a2[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1a2, s2a2);
+	char* s4a2 =	strncat(s1a2, s2a2, 6); // The result
+
+	char s1b2[] = "012345678901234567890123456789"; // A long string
+	char s2b2[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1b2, s2b2);
+	char* s4b2 = mystrncat(s1b2, s2b2, 6); // The result
+
+	//If strings are the same, set subtest results to true
+	if (strcmp(s1a2, s1b2) == 0) {
+		ok5 = true;
+	}
+
+	if (strcmp(s4a2, s4b2) == 0) {
+		ok6 = true;
+	}
+
+	ok = ok1 && ok2 && ok3 && ok4 && ok5 && ok6;//set overall result to results of all subtests
+	return ok;//return overall results
 }
 
+/*
+ * Test mystrcat() function but comparing it to standard strcpy() function.
+ * @return true if pass, false if fail.
+ */
+bool testMystrcat(){
+	bool ok1 = false;//Set individual test results to false
+	bool ok2 = false;
+
+	char s1a[] = "012345678901234567890123456789"; // A long string
+	char s2a[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1a, s2a);
+	char* s4a =	strcat(s1a, s2a); // The result
+
+	//printf("In testMystrncat(): s1a = /%s/\n", s1a);
+	//printf("In testMystrncat(): s4a = /%s/\n", s4a);
+
+	char s1b[] = "012345678901234567890123456789"; // A long string
+	char s2b[] = "ABCDEF"; // A short string we will copy into it twice.
+	strcpy(s1b, s2b);
+	char* s4b = mystrcat(s1b, s2b); // The result
+
+	//printf("Concat1: %s\n", s4a);
+	//printf("Concat2: %s\n", s4b);
+
+	//If the strings are the same, set individual test results to true
+	if (strcmp(s1a, s1b) == 0) {
+		ok1 = true;
+	}
+
+	if (strcmp(s4a, s4b) == 0) {
+		ok2 = true;
+	}
 
 
+	return ok1 && ok2;//return individual test results
+}
+
+/** Test mystrndup() function by comparing it to the standard strndup().
+ * @return true if it passes all tests.
+ */
+bool testMystrndup() {
+
+	bool ok = false;//Initialize overall results to false
+
+	//n shorter than s
+	bool ok1 = false;//Initialize subtest 1 results to false
+
+	char s1[] = "Some sample string."; // String we will duplicate.
+	char* s2 = strndup(s1, 4); // Copy 4 characters in it using standard function
+	char* s3 = mystrndup(s1, 4); // Copy 4 characters in it using my function
+
+	if (strcmp(s2, s3) == 0) { // Same result!
+		ok1 = true;//Set subtest 1 results to true
+	}
+
+	//n is longer than s
+	bool ok2 = false;//Initialize subtest 2 results to false
+
+	char s1a[] = "Sample."; // String we will duplicate.
+	char* s2a = strndup(s1a, 9); // Copy 4 characters in it using standard function
+	char* s3a = mystrndup(s1a, 9); // Copy 4 characters in it using my function
+
+	if (strcmp(s2a, s3a) == 0) { // Same result!
+		ok2 = true;//Set subtest 2 results to true
+	}
+
+	//n is equal to s
+	bool ok3 = false;//Initialize subtest 3 results to false
+
+	char s1b[] = "Sample."; // String we will duplicate.
+	char* s2b = strndup(s1b, 7); // Copy 4 characters in it using standard function
+	char* s3b = mystrndup(s1b, 7); // Copy 4 characters in it using my function
+
+	if (strcmp(s2b, s3b) == 0) { // Same result!
+		ok3 = true;//Set subtest 3 results to true
+	}
+
+	ok = ok1 && ok2 && ok3;//Set overall result to subtest results
+	return ok;//Return overall result
+}

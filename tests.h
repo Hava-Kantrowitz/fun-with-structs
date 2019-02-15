@@ -1,7 +1,7 @@
 /*
  * tests.h
  *
- *  Created on: 2/8/19
+ *  Created on: Feb 4, 2019
  *      Author: Hava Kantrowitz
  */
 
@@ -13,15 +13,13 @@
 
 // Function prototypes:
 bool tests(void);
-bool testPrintEmployee(void);
-bool testMakeEmployee();
-bool testRandomInteger();
-bool testRandomChar();
-bool testRandomString();
-bool testRandomEmployee();
-bool testArrayEmployees();
-bool testDuplicateEmployees();
-bool testFreeArray();
-bool testDuplicateDeep();
+bool testMystrlen1(void);
+bool testMystrlen2(void);
+bool testMystrdup();
+bool testMystrcpy();
+bool testMystrncpy();
+bool testMystrncat();
+bool testMystrcat();
+bool testMystrndup();
 
 #endif /* TESTS_H_ */
